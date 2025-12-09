@@ -33,9 +33,9 @@ FROM ubuntu:22.04
 # Avoid prompts from apt
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install nginx
+# Install nginx and wget (for health checks)
 RUN apt-get update && \
-    apt-get install -y nginx && \
+    apt-get install -y nginx wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -45,13 +45,9 @@ COPY --from=builder /app/dist /var/www/html
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
 
-# Copy startup script
-COPY start-nginx.sh /usr/local/bin/start-nginx.sh
-RUN chmod +x /usr/local/bin/start-nginx.sh
-
-# Expose port (Coolify will set PORT env variable)
+# Expose port 5555
 EXPOSE 5555
 
-# Start nginx with dynamic port
-CMD ["/usr/local/bin/start-nginx.sh"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
 

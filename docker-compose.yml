@@ -2,9 +2,22 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: tds-ai-hub
-    restart: always
+    restart: unless-stopped
     ports:
       - "5555:5555"
-    image: tds-ai-hub:latest
+    networks:
+      - tds-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5555"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  tds-network:
+    driver: bridge
