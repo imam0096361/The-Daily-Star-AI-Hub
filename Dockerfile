@@ -8,7 +8,8 @@ RUN npm run build
 
 # Production stage
 FROM nginx:alpine
-RUN apk add --no-cache wget
+RUN apk add --no-cache wget && \
+    rm -f /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 9999
