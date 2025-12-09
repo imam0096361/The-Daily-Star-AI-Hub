@@ -45,9 +45,13 @@ COPY --from=builder /app/dist /var/www/html
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
 
-# Expose port 5555
+# Copy startup script
+COPY start-nginx.sh /usr/local/bin/start-nginx.sh
+RUN chmod +x /usr/local/bin/start-nginx.sh
+
+# Expose port (Coolify will set PORT env variable)
 EXPOSE 5555
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx with dynamic port
+CMD ["/usr/local/bin/start-nginx.sh"]
 

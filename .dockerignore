@@ -3,6 +3,7 @@ npm-debug.log
 .git
 .gitignore
 README.md
+COOLIFY_DEPLOYMENT.md
 .env
 .env.local
 .env.*.local
