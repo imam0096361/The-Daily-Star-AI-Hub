@@ -6,4 +6,5 @@ services:
     container_name: tds-ai-hub
     restart: always
     ports:
-      - "80:80"
+      - "5555:5555"
+    image: tds-ai-hub:latest
